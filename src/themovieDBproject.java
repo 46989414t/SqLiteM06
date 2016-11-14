@@ -7,6 +7,7 @@ import org.json.simple.parser.JSONParser;
 
 import javax.xml.transform.Transformer;
 import java.io.*;
+import java.lang.reflect.Array;
 import java.net.*;
 
 /**
@@ -28,11 +29,11 @@ import java.net.*;
 //para el Cast: http://api.themoviedb.org/3/movie/49521/casts?api_key=###
 
 public class themovieDBproject {
-
+    private static String api_key = "18cae3b3818a484b1bf732d10321342b";
     public static void main(String[] args){
         String s = "";
         String a = "";
-        String api_key = "18cae3b3818a484b1bf732d10321342b";
+        //String api_key = "18cae3b3818a484b1bf732d10321342b";
 
         for (int i = 0; i < 10; i++) {
             int peli = 600 +i;
@@ -43,8 +44,8 @@ public class themovieDBproject {
                 s = getHTML(peticio);
                 SJS(s);
 
-                a = getHTML(peticioCast);
-                SJS(a);
+                /*a = getHTML(peticioCast);
+                SJS(a);*/
             } catch (Exception e) {
                 System.out.println("La peli "+film+" no existeix");
             }
@@ -72,12 +73,27 @@ public class themovieDBproject {
      * @param cadena
      */
     public static void SJS (String cadena){
+        int x = 2;
         Object obj02 =JSONValue.parse(cadena);
         JSONObject arra02=(JSONObject)obj02;
-        //System.out.println("INFORMACIO DE LA PELI: "+arra02.get("title")+" - "+ arra02.get("release_date") + " - ");
         System.out.println(arra02.get("id")+" - "+arra02.get("original_title")+" - "+arra02.get("release_date"));
         //System.out.println(arra02.get("original_title"));
         //System.out.println(arra02.get("release_date"));
+
+        //SACA EL CASTING DE LA PELI
+        String respuestaPeticion ="";
+        String peticioCast = "http://api.themoviedb.org/3/movie/"+arra02.get("id")+"/casts?api_key="+api_key;
+        try {
+            respuestaPeticion = getHTML(peticioCast);
+            System.out.println("CASTING: "+respuestaPeticion);
+            Object objCast = JSONValue.parse(respuestaPeticion);
+            JSONObject objActor=(JSONObject)objCast;
+            JSONArray arrayCast = (JSONArray) objActor.get("cast");
+            System.out.println("CASTING: 2"+objActor.get("cast"));
+            System.out.println("CASTING: 3"+arrayCast);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
     }
 
