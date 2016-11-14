@@ -19,7 +19,7 @@ public class createSQLite {
                 Class.forName("org.sqlite.JDBC");
 
                 //conection: conecta con la BBDD
-                c = DriverManager.getConnection("jdbc:sqlite:test.db");
+                c = DriverManager.getConnection("jdbc:sqlite:BBDDpelis.db");
                 System.out.println("Opened database successfully");
 
                 stmt = c.createStatement();
